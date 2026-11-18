@@ -1,0 +1,15 @@
+#!/bin/sh
+set -eu
+
+ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
+"$ROOT/bin/build"
+cd "$ROOT/pkgbuild"
+
+if [ "$(id -u)" -eq 0 ]; then
+    exec makepkg -fsi "$@"
+fi
+
+# This machine has no passwordless sudo; pkexec works from agent sessions.
+package=$(makepkg -f --packagelist "$@")
+makepkg -f "$@"
+exec pkexec pacman -U --noconfirm "$package"

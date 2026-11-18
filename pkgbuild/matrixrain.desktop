@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Matrix Rain
+Comment=Bring your wallpaper to life with falling code
+Exec=matrixrain
+Icon=matrixrain
+Terminal=false
+Categories=Utility;
+StartupWMClass=matrixrain
