@@ -10,6 +10,6 @@ if [ "$(id -u)" -eq 0 ]; then
 fi
 
 # This machine has no passwordless sudo; pkexec works from agent sessions.
-package=$(makepkg -f --packagelist "$@")
+package=$(makepkg -f --packagelist "$@" | head -n 1)
 makepkg -f "$@"
 exec pkexec pacman -U --noconfirm "$package"
