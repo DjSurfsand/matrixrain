@@ -4,6 +4,7 @@
 #include <QtTest>
 
 #include "backend.h"
+#include "rainitem.h"
 #include "theme.h"
 #include "translator.h"
 
@@ -35,6 +36,19 @@ private slots:
         backend.setDensity(-4);
         QCOMPARE(backend.density(), 1);
         QVERIFY(!backend.glyphs().isEmpty());
+    }
+
+    void rainItemDefaultsAndClamps()
+    {
+        RainItem item;
+        QCOMPARE(item.cell(), 18);
+        QCOMPARE(item.speed(), 5);
+        QVERIFY(!item.glyphs().isEmpty());
+        QVERIFY(!item.running());
+        item.setSpeed(99);
+        QCOMPARE(item.speed(), 10);
+        item.setCell(99);
+        QCOMPARE(item.cell(), 30);
     }
 
     void themeFallsBack()

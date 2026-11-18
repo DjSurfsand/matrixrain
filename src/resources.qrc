@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file alias="Main.qml">Main.qml</file>
         <file alias="RainWindow.qml">RainWindow.qml</file>
-        <file alias="RainCanvas.qml">RainCanvas.qml</file>
         <file alias="i18n/en.json">i18n/en.json</file>
     </qresource>
 </RCC>

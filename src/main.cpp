@@ -4,6 +4,7 @@
 #include <QIcon>
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
+#include <QQmlEngine>
 #include <QQmlContext>
 #include <QQuickStyle>
 #include <QQuickWindow>
@@ -12,6 +13,7 @@
 #include <LayerShellQt/Window>
 
 #include "backend.h"
+#include "rainitem.h"
 #include "theme.h"
 #include "translator.h"
 
@@ -26,6 +28,7 @@ int main(int argc, char *argv[]) {
     app.setWindowIcon(QIcon::fromTheme("matrixrain"));
 
     QQuickStyle::setStyle("Material");
+    qmlRegisterType<RainItem>("MatrixRain", 1, 0, "RainItem");
 
     // Installed before anything is translated, and every qsTr() binding is
     // re-evaluated when the Omarchy language changes.
@@ -55,6 +58,11 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     QObject *overlayObject = overlayComponent.create();
+    // QML-created objects are garbage-collectable by default. The overlay
+    // lives for the whole process, so give it C++ ownership and a parent that
+    // destroys it once at shutdown instead of leaving it to the JS heap.
+    QQmlEngine::setObjectOwnership(overlayObject, QQmlEngine::CppOwnership);
+    overlayObject->setParent(&app);
     auto *overlay = qobject_cast<QQuickWindow *>(overlayObject);
     if (!overlay) {
         qWarning() << "Rain overlay is not a window";

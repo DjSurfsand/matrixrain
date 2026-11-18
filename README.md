@@ -38,9 +38,10 @@ bin/test       # Qt Test suite, offscreen
 bin/install    # build and install as an Arch package
 ```
 
-The C++ side owns state, settings, theme following and the layer-shell
-surface; QML owns the layout and the Canvas renderer. Everything is compiled
-into one binary by `qmake6`.
+C++ owns the state, settings, theme following, layer-shell surface and the
+rain renderer (a cached glyph atlas blitted through `QQuickPaintedItem`); QML
+owns the two windows and their layout. Everything is compiled into one binary
+by `qmake6`.
 
 ## Attribution
 
