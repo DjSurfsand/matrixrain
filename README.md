@@ -29,6 +29,10 @@ live — change the theme and the rain changes with it.
 
 The switch in the window does the same thing as `Space`. Speed and density
 are adjustable, and all three settings are remembered between launches.
+Editing `~/.config/matrixrain/matrixrain.conf` while the app is running takes
+effect immediately. Closing the control window quits the app and removes the
+overlay; while the effect is off the renderer's timer stops and it costs no
+CPU.
 
 ## Development
 

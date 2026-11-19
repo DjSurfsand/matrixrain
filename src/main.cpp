@@ -48,6 +48,16 @@ int main(int argc, char *argv[]) {
     if (engine.rootObjects().isEmpty())
         return 1;
 
+    // Without this, closing the control window leaves the layer-shell overlay
+    // mapped and animating forever: Qt still sees a visible window, so
+    // quitOnLastWindowClosed never fires and the app becomes an invisible
+    // battery drain with no visible way to stop it.
+    auto *control = qobject_cast<QQuickWindow *>(engine.rootObjects().first());
+    if (!control)
+        return 1;
+    QObject::connect(control, &QQuickWindow::closing, &app, &QGuiApplication::quit);
+    QObject::connect(control, &QObject::destroyed, &app, &QGuiApplication::quit);
+
     // The rain lives on its own wlr-layer-shell surface: anchored to every
     // edge, on the bottom layer so it sits above the wallpaper and below the
     // user's windows, and with no keyboard interactivity so it never steals

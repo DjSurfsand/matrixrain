@@ -27,6 +27,22 @@ private slots:
         QVERIFY(again.enabled());
     }
 
+    void backendFollowsExternalConfigEdit()
+    {
+        QTemporaryDir dir;
+        const QString file = dir.filePath("settings.conf");
+        Backend backend(file);
+        QVERIFY(backend.enabled());
+
+        QFile config(file);
+        QVERIFY(config.open(QIODevice::WriteOnly | QIODevice::Truncate));
+        config.write("[General]\nenabled=false\nspeed=9\n");
+        config.close();
+
+        QTRY_VERIFY_WITH_TIMEOUT(!backend.enabled(), 3000);
+        QCOMPARE(backend.speed(), 9);
+    }
+
     void knobsAreClamped()
     {
         QTemporaryDir dir;

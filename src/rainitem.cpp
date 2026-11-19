@@ -20,8 +20,10 @@ RainItem::RainItem(QQuickItem *parent)
     // An FBO keeps the blits on the GPU; the default Image target would upload
     // a full-screen QImage every frame.
     setRenderTarget(QQuickPaintedItem::FramebufferObject);
-    m_timer.setInterval(33);
-    m_timer.setTimerType(Qt::PreciseTimer);
+    // 25 fps is indistinguishable for falling code and cuts blits and
+    // wakeups versus 30; a coarse timer avoids precision wakeups on battery.
+    m_timer.setInterval(40);
+    m_timer.setTimerType(Qt::CoarseTimer);
     connect(&m_timer, &QTimer::timeout, this, &RainItem::advance);
     rebuildAtlas();
 }

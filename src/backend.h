@@ -1,7 +1,9 @@
 #pragma once
 
+#include <QFileSystemWatcher>
 #include <QObject>
 #include <QString>
+#include <QTimer>
 #include <memory>
 
 class QSettings;
@@ -36,7 +38,12 @@ signals:
     void densityChanged();
 
 private:
+    void armWatcher();
+    void reloadSettings();
+
     std::unique_ptr<QSettings> m_settings;
+    QFileSystemWatcher m_settingsWatcher;
+    QTimer m_reloadTimer;
     bool m_enabled = true;
     int m_speed = 5;
     int m_density = 6;
